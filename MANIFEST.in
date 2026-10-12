@@ -1,0 +1,19 @@
+# Files to include in the source distribution (sdist) beyond what setuptools
+# picks up automatically (README, LICENSE, pyproject.toml, the package itself).
+
+include CHANGELOG.md
+include CITATION.cff
+include CONTRIBUTING.md
+include requirements.txt
+include .zenodo.json
+
+# The worked example and its documentation, but NOT the example images: they are
+# ~18 MB of lossless microscopy and do not belong in every pip download. The
+# script exits with a pointer to examples/data/README.md when they are absent,
+# and the images are available from the GitHub repository and the Zenodo archive.
+include examples/run_samples.py
+include examples/data/README.md
+
+# Never ship build or cache artifacts.
+global-exclude __pycache__ *.py[cod] .DS_Store
+prune examples/output

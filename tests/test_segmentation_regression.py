@@ -207,9 +207,18 @@ EXAMPLE_EXPECTED = {
     "treated_48h_01.png": (114563.4, 381.9, 0.312),
 }
 
+# The images are NOT shipped in the source distribution (they are ~18 MB of
+# lossless microscopy). The directory itself IS shipped, because it carries the
+# README, so testing for the directory is not enough - check the files.
+_EXAMPLES_PRESENT = all(
+    os.path.isfile(os.path.join(EXAMPLE_DIR, name)) for name in EXAMPLE_EXPECTED
+)
+
 needs_examples = pytest.mark.skipif(
-    not os.path.isdir(EXAMPLE_DIR),
-    reason="bundled example images are missing from examples/data",
+    not _EXAMPLES_PRESENT,
+    reason="bundled example images are not present (expected when installed "
+           "from the source distribution); get them from the GitHub repository "
+           "or the Zenodo archive",
 )
 
 

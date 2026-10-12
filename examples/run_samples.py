@@ -53,7 +53,8 @@ def main() -> int:
     os.makedirs(OUT_DIR, exist_ok=True)
     cfg = Config(calibration=CalibrationConfig(um_per_px=UM_PER_PX_4X))
 
-    print(f"spheroidkit example run  |  calibration = {UM_PER_PX_4X} um/px (4x)\n")
+    print(f"spheroidkit example run  |  calibration = {UM_PER_PX_4X} um/px (4x)\n",
+          flush=True)
 
     missing = 0
     for filename, label in SAMPLES:
