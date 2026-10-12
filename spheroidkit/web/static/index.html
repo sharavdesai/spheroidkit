@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>spheroidkit — tumor spheroid analysis</title>
+<style>
+  :root{
+    --ink:#1a2230; --sub:#5a6b82; --line:#dce3ec; --bg:#f3f6fa;
+    --panel:#ffffff; --accent:#0f7d72; --accent-soft:#e1f1ef;
+    --cyan:#06b6c4; --warn:#b4541a; --warn-soft:#f8ece3;
+    --mono:'SFMono-Regular',ui-monospace,'Cascadia Code',Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+       line-height:1.55;-webkit-font-smoothing:antialiased}
+  header{padding:28px 32px;border-bottom:1px solid var(--line);background:var(--panel);
+         display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+  header h1{margin:0;font-size:20px;font-weight:600;letter-spacing:-.01em}
+  header .tag{font-family:var(--mono);font-size:12px;color:var(--accent);
+              background:var(--accent-soft);padding:3px 9px;border-radius:5px}
+  header .sub{font-size:13px;color:var(--sub);margin-left:auto}
+  main{max-width:1060px;margin:0 auto;padding:28px 32px;
+       display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start}
+  @media(max-width:820px){main{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .panel h2{margin:0 0 16px;font-size:13px;font-weight:600;text-transform:uppercase;
+            letter-spacing:.06em;color:var(--sub)}
+  label{display:block;font-size:13px;color:var(--sub);margin:14px 0 5px}
+  input[type=number]{width:100%;padding:9px 11px;border:1px solid var(--line);
+       border-radius:7px;font-family:var(--mono);font-size:14px;color:var(--ink)}
+  input[type=number]:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+  .drop{border:1.5px dashed var(--line);border-radius:10px;padding:26px 16px;text-align:center;
+        cursor:pointer;transition:.15s;color:var(--sub);font-size:13px}
+  .drop:hover{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+  .drop.has{border-style:solid;border-color:var(--accent);color:var(--ink);background:#fff}
+  .check{display:flex;align-items:center;gap:8px;margin:16px 0 0;font-size:13px;color:var(--ink)}
+  .check input{width:16px;height:16px;accent-color:var(--accent)}
+  button{margin-top:18px;width:100%;padding:11px;background:var(--accent);color:#fff;
+         border:0;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
+  button:hover{background:#0c655c}
+  button:disabled{background:#aab6c2;cursor:default}
+  .view{min-height:280px;display:flex;align-items:center;justify-content:center;
+        background:#0d1320;border-radius:10px;overflow:hidden}
+  .view img{max-width:100%;max-height:520px;display:block}
+  .view .empty{color:#5a6b82;font-size:13px;font-family:var(--mono)}
+  .metrics{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:1px;
+           background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .cell{background:var(--panel);padding:13px 15px}
+  .cell .k{font-size:11px;color:var(--sub);text-transform:uppercase;letter-spacing:.05em}
+  .cell .v{font-family:var(--mono);font-size:18px;margin-top:3px;color:var(--ink)}
+  .cell .u{font-size:11px;color:var(--sub)}
+  .surrogate{margin-top:14px;background:var(--warn-soft);border:1px solid #ecd6c4;
+        border-radius:9px;padding:12px 14px;font-size:12px;color:var(--warn)}
+  .spin{display:inline-block;width:15px;height:15px;border:2px solid #fff;
+        border-top-color:transparent;border-radius:50%;animation:r .7s linear infinite;
+        vertical-align:-2px;margin-right:7px}
+  @keyframes r{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<header>
+  <h1>spheroidkit</h1>
+  <span class="tag">v0.6</span>
+  <span class="sub">tumor spheroid analysis · phase contrast / brightfield</span>
+</header>
+<main>
+  <section class="panel">
+    <h2>Input</h2>
+    <div class="drop" id="drop">Drop a spheroid image, or click to browse</div>
+    <input type="file" id="file" accept="image/*" hidden>
+
+    <label for="ump">Calibration — µm per pixel (optional)</label>
+    <input type="number" id="ump" step="0.001" min="0" placeholder="e.g. 1.55  — leave blank for pixels">
+
+    <div class="check">
+      <input type="checkbox" id="viab">
+      <label for="viab" style="margin:0">Compute viability surrogate</label>
+    </div>
+
+    <button id="run" disabled>Analyze</button>
+  </section>
+
+  <section class="panel">
+    <h2>Result</h2>
+    <div class="view" id="view"><span class="empty">awaiting image</span></div>
+    <div id="out"></div>
+  </section>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+let chosen=null;
+const drop=$('#drop'), file=$('#file'), run=$('#run');
+drop.onclick=()=>file.click();
+file.onchange=e=>{ if(e.target.files[0]) setFile(e.target.files[0]); };
+['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('has');}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();if(ev==='drop'&&e.dataTransfer.files[0])setFile(e.dataTransfer.files[0]);else drop.classList.remove('has');}));
+function setFile(f){chosen=f;drop.classList.add('has');drop.textContent=f.name;run.disabled=false;}
+
+function cell(k,v,u){return `<div class="cell"><div class="k">${k}</div><div class="v">${v}<span class="u"> ${u||''}</span></div></div>`;}
+
+run.onclick=async()=>{
+  if(!chosen)return;
+  run.disabled=true; run.innerHTML='<span class="spin"></span>Analyzing';
+  const fd=new FormData();
+  fd.append('file',chosen);
+  if($('#ump').value) fd.append('um_per_px',$('#ump').value);
+  fd.append('with_viability',$('#viab').checked?'true':'false');
+  try{
+    const r=await fetch('/analyze',{method:'POST',body:fd});
+    if(!r.ok) throw new Error((await r.json()).detail||'analysis failed');
+    const d=await r.json(); render(d);
+  }catch(err){ $('#out').innerHTML=`<div class="surrogate">${err.message}</div>`; }
+  run.disabled=false; run.textContent='Analyze';
+};
+
+function render(d){
+  $('#view').innerHTML=`<img src="data:image/png;base64,${d.overlay_png_base64}">`;
+  const m=d.metrics, u=m.units;
+  let html='<div class="metrics">'
+    +cell('Area',Math.round(m.area).toLocaleString(),u+'²')
+    +cell('Eq. diameter',m.eq_diameter.toFixed(1),u)
+    +cell('Major axis',m.major_axis.toFixed(1),u)
+    +cell('Minor axis',m.minor_axis.toFixed(1),u)
+    +cell('Circularity',m.circularity.toFixed(3),'')
+    +cell('Volume',Number(m.volume.toPrecision(4)).toLocaleString(),u+'³')
+    +'</div>';
+  if(!m.volume_reliable)
+    html+=`<div class="surrogate">Volume is a model-based ellipsoidal estimate; low circularity (${m.circularity.toFixed(2)}) means treat it as approximate.</div>`;
+  if(d.viability){
+    const v=d.viability;
+    html+='<div class="metrics" style="margin-top:1px">'
+      +cell('Viability index',v.index.toFixed(3),'')
+      +cell('Solidity',v.solidity.toFixed(3),'')
+      +'</div>'
+      +`<div class="surrogate">${v.note}</div>`;
+  }
+  $('#out').innerHTML=html;
+}
+</script>
+</body>
+</html>

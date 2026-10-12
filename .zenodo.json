@@ -1,0 +1,17 @@
+{
+  "title": "spheroidkit: a transparent, no-training open-source tool for end-to-end measurement of tumour spheroids",
+  "description": "spheroidkit is an open-source Python toolkit for end-to-end analysis of tumour spheroid (MCTS) brightfield microscopy images: illumination correction, texture-based segmentation, shape-aware size measurement, growth tracking, dose-response (IC50) fitting, group statistics and a morphological viability surrogate. It uses transparent classical image processing (no training data, no GPU) and is packaged as an installable Python library. Version 1.1.0 corresponds to the validation reported in the associated Application Note.",
+  "upload_type": "software",
+  "license": "MIT",
+  "version": "1.1.0",
+  "access_right": "open",
+  "keywords": ["tumour spheroid","multicellular tumour spheroid","image segmentation","brightfield microscopy","method validation","open-source software","A549"],
+  "creators": [
+    { "name": "Desai, Sharav A.", "orcid": "0000-0002-8991-7928", "affiliation": "Department of Pharmaceutical Biotechnology, Sanjivani College of Pharmaceutical Education and Research (Autonomous), Kopargaon, Maharashtra, India" },
+    { "name": "Patel, Vipul", "orcid": "0000-0001-7691-5782", "affiliation": "Department of Pharmaceutics, Sanjivani College of Pharmaceutical Education and Research (Autonomous), Kopargaon, Maharashtra, India" },
+    { "name": "Chaudhary, Nilesh", "affiliation": "Department of Pharmaceutics, Sanjivani College of Pharmaceutical Education and Research (Autonomous), Kopargaon, Maharashtra, India" },
+    { "name": "Mehta, Ankit", "affiliation": "Nivagen Pharmaceuticals LLC, California, USA" },
+    { "name": "Baswekar, Anuja G.", "orcid": "0009-0001-5044-8423", "affiliation": "Department of Pharmaceutical Biotechnology, Sanjivani College of Pharmaceutical Education and Research (Autonomous), Kopargaon, Maharashtra, India" },
+    { "name": "Nevase, Ganesh S.", "orcid": "0009-0003-5170-9765", "affiliation": "Department of Pharmaceutical Biotechnology, Sanjivani College of Pharmaceutical Education and Research (Autonomous), Kopargaon, Maharashtra, India" }
+  ]
+}

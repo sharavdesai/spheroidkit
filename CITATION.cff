@@ -1,0 +1,48 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite both the software (this record) and the associated Application Note."
+title: "spheroidkit: a transparent, no-training open-source tool for end-to-end measurement of tumour spheroids"
+abstract: >-
+  spheroidkit is an open-source Python toolkit for end-to-end analysis of tumour
+  spheroid (MCTS) brightfield microscopy images: illumination correction,
+  texture-based segmentation, shape-aware size measurement, growth tracking,
+  dose-response (IC50) fitting, group statistics and a morphological viability
+  surrogate. It uses transparent classical image processing (no training data,
+  no GPU) and is packaged as an installable Python library.
+type: software
+version: "1.1.0"
+date-released: "2026-10-10"
+license: MIT
+repository-code: "https://github.com/sharavdesai/spheroidkit"
+url: "https://github.com/sharavdesai/spheroidkit"
+keywords:
+  - tumour spheroid
+  - multicellular tumour spheroid
+  - image segmentation
+  - brightfield microscopy
+  - method validation
+  - open-source software
+  - A549
+authors:
+  - family-names: Desai
+    given-names: Sharav A.
+    email: sharavdesai@gmail.com
+    affiliation: "Department of Pharmaceutical Biotechnology, Sanjivani College of Pharmaceutical Education and Research (Autonomous), Kopargaon, Maharashtra, India"
+    orcid: "https://orcid.org/0000-0002-8991-7928"
+  - family-names: Patel
+    given-names: Vipul
+    affiliation: "Department of Pharmaceutics, Sanjivani College of Pharmaceutical Education and Research (Autonomous), Kopargaon, Maharashtra, India"
+    orcid: "https://orcid.org/0000-0001-7691-5782"
+  - family-names: Chaudhary
+    given-names: Nilesh
+    affiliation: "Department of Pharmaceutics, Sanjivani College of Pharmaceutical Education and Research (Autonomous), Kopargaon, Maharashtra, India"
+  - family-names: Mehta
+    given-names: Ankit
+    affiliation: "Nivagen Pharmaceuticals LLC, California, USA"
+  - family-names: Baswekar
+    given-names: Anuja G.
+    affiliation: "Department of Pharmaceutical Biotechnology, Sanjivani College of Pharmaceutical Education and Research (Autonomous), Kopargaon, Maharashtra, India"
+    orcid: "https://orcid.org/0009-0001-5044-8423"
+  - family-names: Nevase
+    given-names: Ganesh S.
+    affiliation: "Department of Pharmaceutical Biotechnology, Sanjivani College of Pharmaceutical Education and Research (Autonomous), Kopargaon, Maharashtra, India"
+    orcid: "https://orcid.org/0009-0003-5170-9765"

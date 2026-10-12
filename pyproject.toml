@@ -1,0 +1,106 @@
+[build-system]
+# Declares HOW the package is built. setuptools is the standard, mature build
+# backend (the same machinery NumPy/scikit-learn historically used). These two
+# lines are boilerplate you rarely change.
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# ---- Core identity: this is what appears on PyPI and in `pip install` ----
+name = "spheroidkit"
+version = "1.1.0"
+description = "Open, no-install toolkit for end-to-end tumour spheroid growth and drug-response analysis from brightfield microscopy"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+# ---- Authorship: sole author, Sanjivani affiliation ----
+authors = [
+    { name = "Sharav A. Desai", email = "sharavdesai@gmail.com" },
+]
+maintainers = [
+    { name = "Sharav A. Desai", email = "sharavdesai@gmail.com" },
+]
+
+# ---- Keywords and classifiers help people FIND the package on PyPI and tell
+#      pip/other tools what environments it supports. ----
+keywords = ["spheroid", "tumour spheroid", "MCTS", "image analysis",
+            "drug response", "IC50", "cancer", "microscopy", "cheminformatics"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+
+# ---- CORE dependencies: the minimum needed to USE the analysis engine.
+#      Deliberately lightweight (no web server here) — the scikit-learn pattern
+#      of keeping the library core minimal. ----
+dependencies = [
+    "numpy>=1.26",
+    "opencv-python-headless>=4.9",
+    "scikit-image>=0.22",
+    "scipy>=1.11",
+]
+
+[project.optional-dependencies]
+# ---- OPTIONAL extras: installed only if explicitly requested.
+#      `pip install spheroidkit`        -> core library only
+#      `pip install spheroidkit[web]`   -> adds the web server
+#      `pip install spheroidkit[dev]`   -> adds testing/plotting tools
+#      `pip install spheroidkit[all]`   -> everything
+# ----
+web = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "python-multipart>=0.0.9",
+]
+dev = [
+    "pytest>=8.0",
+    "matplotlib>=3.8",
+]
+all = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "python-multipart>=0.0.9",
+    "pytest>=8.0",
+    "matplotlib>=3.8",
+]
+
+[project.urls]
+# ---- These become clickable links on the PyPI page. Fill the repository/docs
+#      URLs when you create the GitHub repo (placeholders for now). ----
+Homepage = "https://github.com/sharavdesai/spheroidkit"
+Repository = "https://github.com/sharavdesai/spheroidkit"
+Documentation = "https://github.com/sharavdesai/spheroidkit#readme"
+"Bug Tracker" = "https://github.com/sharavdesai/spheroidkit/issues"
+
+[project.scripts]
+# ---- Console entry point: after install, typing `spheroidkit-serve` in a
+#      terminal launches the web app (requires the [web] extra). This is the
+#      matplotlib-style convenience command. It maps the command to a Python
+#      function we will define in spheroidkit/cli.py. ----
+spheroidkit-serve = "spheroidkit.cli:serve"
+
+[tool.setuptools.packages.find]
+# ---- Tells setuptools which folders are part of the package. It will pick up
+#      spheroidkit/ and all its submodules automatically. ----
+include = ["spheroidkit*"]
+
+[tool.setuptools.package-data]
+# ---- Non-Python files that must be shipped INSIDE the package (otherwise pip
+#      would ship only .py files and the web front-end would be missing). ----
+spheroidkit = ["web/static/*.html"]
+
+[tool.pytest.ini_options]
+# ---- Lets you run the whole suite with just `pytest` from the project root. ----
+testpaths = ["tests"]
+python_files = "test_*.py"

@@ -1,0 +1,16 @@
+# Normalise line endings in the repository to LF, and check out natively.
+# Without this, files authored on Windows land in the archive with CRLF and the
+# Zenodo snapshot differs from what Linux/macOS users and CI produce.
+* text=auto eol=lf
+
+# Binary files: never normalise, never diff as text.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.bmp  binary
+*.tif  binary
+*.tiff binary
+*.ipynb binary
+*.whl  binary
+*.gz   binary
+*.zip  binary
