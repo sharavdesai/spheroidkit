@@ -1,5 +1,10 @@
 # spheroidkit
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23311574.svg)](https://doi.org/10.5281/zenodo.23311574)
+[![PyPI](https://img.shields.io/pypi/v/spheroidkit.svg)](https://pypi.org/project/spheroidkit/)
+[![tests](https://github.com/sharavdesai/spheroidkit/actions/workflows/tests.yml/badge.svg)](https://github.com/sharavdesai/spheroidkit/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 **Open, no-install toolkit for end-to-end tumour spheroid analysis from brightfield / phase-contrast microscopy.**
 
 spheroidkit takes microscopy images of multicellular tumour spheroids (MCTS) and carries them through the *entire* analysis workflow in one place — segmentation, shape-aware size measurement, growth tracking, dose-response (IC50) fitting, and group statistics — without installation, login, or programming. Unlike tools that stop at segmentation and leave you to fit curves elsewhere, spheroidkit closes the loop from raw image to publication-ready drug-response result.
@@ -94,3 +99,19 @@ MIT License — see [LICENSE](LICENSE). Copyright (c) 2026 Sharav A. Desai.
 ## Author
 
 **Sharav A. Desai** — Department of Pharmaceutical Biotechnology, Sanjivani College of Pharmaceutical Education and Research (Autonomous), Kopargaon, Maharashtra, India.
+
+
+## How to cite
+
+If spheroidkit contributes to work you publish, please cite the software archive:
+
+> Desai, S. A., Patel, V., Chaudhary, N., Mehta, A., Baswekar, A. G., & Nevase, G. S. (2026).
+> *spheroidkit: a transparent, no-training open-source tool for end-to-end measurement of
+> tumour spheroids* (Version 1.1.0) [Computer software]. Zenodo.
+> https://doi.org/10.5281/zenodo.23311574
+
+- **Concept DOI** [10.5281/zenodo.23311574](https://doi.org/10.5281/zenodo.23311574) — always resolves to the latest version; use this one unless you need to pin a version.
+- **Version DOI (v1.1.0)** [10.5281/zenodo.23311575](https://doi.org/10.5281/zenodo.23311575) — the exact release validated in the Application Note.
+
+`CITATION.cff` in this repository carries the same metadata in machine-readable form; GitHub's
+"Cite this repository" button reads it directly.

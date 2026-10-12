@@ -9,6 +9,14 @@ abstract: >-
   surrogate. It uses transparent classical image processing (no training data,
   no GPU) and is packaged as an installable Python library.
 type: software
+doi: 10.5281/zenodo.23311574
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23311574
+    description: "Concept DOI - resolves to the latest version of spheroidkit"
+  - type: doi
+    value: 10.5281/zenodo.23311575
+    description: "Version DOI for v1.1.0, the release validated in the Application Note"
 version: "1.1.0"
 date-released: "2026-10-10"
 license: MIT
